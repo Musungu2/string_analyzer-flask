@@ -6,8 +6,15 @@ from collections import Counter
 import re
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///strings.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
+
+# Ensure the database and tables exist
+with app.app_context():
+    db.create_all()
 
 from models import AnalyzedString
 from utils import analyze_string
